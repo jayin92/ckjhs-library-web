@@ -19,7 +19,7 @@ def get_name(request):
 			return HttpResponseRedirect('/book/')
 	else:
 		form = NameForm()
-	return render(request, 'main/name.html', {'form':form})
+	return render(request, 'main/rent.html', {'form':form})
 
 def detail(request, books_id):
 	book = get_object_or_404(Books, pk=books_id) # use book_id as a url
