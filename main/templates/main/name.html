@@ -1,11 +1,5 @@
 {% extends 'main/base.html'%}
 {% block content %}
-<!-- 目前構想
-isbn 欄位(每個人都不會亂借書)
-登錄後自動填入班級座號姓名
-設計可借閱多本書的類似表格的系統
-自動判斷借閱或歸還
-	 	-->
 <form action="/your-name/" method="post">
     {% csrf_token %}
     {{ form }}
