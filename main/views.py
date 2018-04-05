@@ -3,6 +3,7 @@ from django.views import generic
 from django.http import HttpResponseRedirect
 from .models import Books
 from .forms import NameForm
+book_list = []
 # Create your views here.
 class IndexView(generic.ListView):
 	template_name = 'main/index.html'
@@ -12,14 +13,17 @@ class IndexView(generic.ListView):
 		"""Return all books in datebase"""
 		return Books.objects.all()
 
-def get_name(request):
+def rent(request):
 	if request.method == 'POST':
 		form = NameForm(request.POST)
 		if form.is_valid():
-			return HttpResponseRedirect('/book/')
+			book = Books.objects.get(book_isbn=request.POST['book_isbn'])
+			book_list.append(book)
+			print(book_list)
+
 	else:
 		form = NameForm()
-	return render(request, 'main/rent.html', {'form':form})
+	return render(request, 'main/rent.html', {'form':form, 'book_list':book_list})
 
 def detail(request, books_id):
 	book = get_object_or_404(Books, pk=books_id) # use book_id as a url

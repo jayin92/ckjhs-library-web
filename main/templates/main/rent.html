@@ -6,7 +6,25 @@ isbn 欄位(每個人都不會亂借書)
 設計可借閱多本書的類似表格的系統
 自動判斷借閱或歸還
 	 	-->
-<form action="/your-name/" method="post">
+<!-- 刷入書籍 書籍isbn 出版日期 作者  -->
+<table border="2">
+	<tr>
+		<td>書名</td>
+		<td>作者</td>
+		<td>出版日期</td>
+		<td>ISBN</td>
+	</tr>
+	{% for book in book_list %}
+		<tr>
+			<td>{{book.book_title}}</td>
+			<td>{{book.book_author}}</td>
+			<td>{{book.book_pubtime}}</td>
+			<td>{{book.book_isbn}}</td>
+		</tr>
+	{% endfor %}
+
+</table>
+<form method="post">
     {% csrf_token %}
     {{ form }}
     <input type="submit" value="送出" />
