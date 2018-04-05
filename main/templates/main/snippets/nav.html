@@ -3,5 +3,12 @@
 	<h1>建國國中數資班圖書管理系統</h1>
 	<a href="/book">總書目</a>
 	<a href="/book/rent">借閱&歸還</a>
+	{% if user.is_authenticated %}
+		<font color="blue">歡迎 {{user.username}}</font>
+		<a href="/logout/">登出</a>
+	{% else %}
+		<a href="/login/">登入</a>
+	{% endif %}
+
 </div>
 <br>
