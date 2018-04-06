@@ -10,12 +10,12 @@ isbn 欄位(每個人都不會亂借書)
 {% if error %}
 <h3 style="color: #ff3300">請輸入有效的ISBN</h3>
 {% endif %}
-<table border="3" class="table">
+<table class="table-hover" style="width:100%">
 	<tr>
-		<td>書名</td>
-		<td>作者</td>
-		<td>出版日期</td>
-		<td>ISBN</td>
+		<th>書名</th>
+		<th>作者</th>
+		<th>出版日期</th>
+		<th>ISBN</th>
 	</tr>
 	{% for book in book_list %}
 		<tr>
@@ -31,6 +31,6 @@ isbn 欄位(每個人都不會亂借書)
 <form method="post">
     {% csrf_token %}
     {{ form }}
-    <input type="submit" value="送出" />
+    <input type="submit" class="btn btn-primary" value="送出" />
 </form>
 {% endblock content %}

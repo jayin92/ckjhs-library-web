@@ -1,10 +1,11 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
 from django.http import HttpResponseRedirect
 from .models import Books
 from .forms import NameForm, LoginForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
 book_list = []
 # Create your views here.
 class IndexView(generic.ListView):
@@ -17,18 +18,18 @@ class IndexView(generic.ListView):
 
 @login_required(login_url='/login/')
 def rent(request):
+	global book_list
 	error = False
 	if request.method == 'POST':
 		form = NameForm(request.POST)
 		if form.is_valid():
 			isbn = form.cleaned_data['book_isbn']
-			error = False
 			try:
 				book = Books.objects.get(book_isbn=isbn)
 				book_list.append(book)
+				error = False
 			except:
 				error = True
-				pass
 			form = NameForm()
 	else:
 		form = NameForm()
@@ -52,5 +53,20 @@ def loginview(request):
 		form = LoginForm()
 	return render(request, 'main/login.html', {'form':form})
 def logoutview(request):
+	global book_list
+	book_list = []
 	logout(request)
 	return HttpResponseRedirect('/book/')
+def registerview(request):
+	if request.method == 'POST':
+		form = UserCreationForm(request.POST)
+		if form.is_valid():
+			form.save()
+			username = form.cleaned_data.get('username')
+			raw_password = form.cleaned_data.get('password1')
+			user = authenticate(username=username, password=raw_password)
+			login(request, user)
+			return redirect('/book/')
+	else:
+		form = UserCreationForm()
+	return render(request, 'main/register.html', {'form':form})

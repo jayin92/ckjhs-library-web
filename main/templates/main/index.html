@@ -1,10 +1,22 @@
 {% extends 'main/base.html'%}
 {% block content %}
 {% if all_book_list %}
-    <ul>
-    {% for book in all_book_list %}
-        <li><a href="/book/{{ book.id }}/">{{ book }}</a></li>
-    {% endfor %}
-    </ul>
+<table class="table" style="width:100%">
+	<tr>
+		<th>書名</th>
+		<th>作者</th>
+		<th>出版日期</th>
+		<th>ISBN</th>
+	</tr>
+	{% for book in all_book_list %}
+		<tr>
+			<td>{{book.book_title}}</td>
+			<td>{{book.book_author}}</td>
+			<td>{{book.book_pubtime}}</td>
+			<td>{{book.book_isbn}}</td>
+		</tr>
+	{% endfor %}
+
+</table>
 {% endif %}
 {% endblock content %}
