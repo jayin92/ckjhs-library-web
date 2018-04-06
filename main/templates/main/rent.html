@@ -7,8 +7,8 @@ isbn 欄位(每個人都不會亂借書)
 自動判斷借閱或歸還
 	 	-->
 <!-- 刷入書籍 書籍isbn 出版日期 作者  -->
-{% if error %}
-<h3 style="color: #ff3300">請輸入有效的ISBN</h3>
+{% if message %}
+<h3 style="color: #ff3300">{{message}}</h3>
 {% endif %}
 <table class="table-hover" style="width:100%">
 	<tr>
