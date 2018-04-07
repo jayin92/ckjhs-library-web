@@ -1,6 +1,5 @@
 {% extends 'main/base.html'%}
 {% block content %}
-
 {% if all_book_list %}
 <table class="table" style="width:100%">
 	<tr>
@@ -11,12 +10,15 @@
 	</tr>
 	{% for book in all_book_list %}
 		{% if book.book_borrowid %}
-		<tr>
-			<td><font color="red">{{book.book_title}}</font></td>
-			<td><font color="red">{{book.book_author}}</font></td>
-			<td><font color="red">{{book.book_pubtime}}</font></td>
-			<td><font color="red">{{book.book_isbn}}</font></td>
+		<div id="parent">
+		<tr data-toggle="tooltip" title="借閱人：{{ book.book_borrowid }}">
+			<td><font color="green">{{book.book_title}}</font></td>
+			<td><font color="green">{{book.book_author}}</font></td>
+			<td><font color="green">{{book.book_pubtime}}</font></td>
+			<td><font color="green">{{book.book_isbn}}</font></td>
 		</tr>
+		<div id="popup" style="display: none">{{book.book_borrowid}}</div>
+	</div>
 		{% else %}
 		<tr>
 			<td>{{book.book_title}}</td>

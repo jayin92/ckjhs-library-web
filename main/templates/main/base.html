@@ -12,5 +12,10 @@
 	{% endblock content %}
 </div>
 {% include 'main/snippets/js.html' %}
+<script>
+$(function () {
+        $("[data-toggle='tooltip']").tooltip();
+    });
+</script>
 </body>
 </html>
