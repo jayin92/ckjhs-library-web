@@ -12,6 +12,7 @@
 {% endif %}
 
 {% if book_list %}
+借閱書籍如下：
 <table class="table-hover" style="width:100%">
 	<tr>
 		<th>書名</th>
@@ -28,9 +29,5 @@
 		</tr>
 	{% endfor %}
 </table>
-	<form method="post">
-	    {% csrf_token %}
-			<input type="submit" class="btn btn-primary" value="確認借閱" />
-	</form>
 {% endif %}
 {% endblock content %}

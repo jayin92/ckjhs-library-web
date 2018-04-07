@@ -40,7 +40,7 @@ isbn 欄位(每個人都不會亂借書)
     {{ form }}
     <input type="submit" class="btn btn-primary" value="送出" />
 </form>
-{% if book_list|length > 1 %}
+{% if book_list|length >= 1 %}
 <input type="button" value='確認借閱' onclick="location.href='/book/rent/confirm'" class="btn btn-primary">
 {% endif %}
 {% endblock content %}
