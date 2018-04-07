@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
-from .models import Books
+from .models import Books, Borrows
 from .forms import BookForm, LoginForm
 from .rent import confirm_rent_database
 book_list = []
@@ -47,6 +47,7 @@ def rent(request):
 	else:
 		form = BookForm()
 	return render(request, 'main/rent.html', {'form':form, 'book_list':book_list})
+
 @login_required(login_url='/login/')
 def rent_confirm(request):
 	global book_list
@@ -59,6 +60,11 @@ def rent_confirm(request):
 	confirm_rent_database(borrow_list, request.user.username)
 	messages.success(request, '借閱成功', extra_tags='alert')
 	return render(request, 'main/rent_confirm.html', {'borrow_list':borrow_list})
+	
+@login_required(login_url='/login/')
+def history(request):
+	borrow_list = Borrows.objects.filter(borrower=request.user.username)
+	return render(request, 'main/history.html', {'borrow_list':borrow_list})
 
 def detail(request, books_id):
 	book = get_object_or_404(Books, pk=books_id) # use book_id as a url

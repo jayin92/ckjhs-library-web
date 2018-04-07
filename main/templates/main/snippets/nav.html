@@ -5,6 +5,7 @@
 
 	{% if user.is_authenticated %}
 		<a href="/book/rent">借閱&歸還</a>
+		<a href="/book/history">借閱歷史</a>		
 		<font color="green">歡迎 {{user.username}}</font>
 		<a href="/logout/">登出</a>
 	{% else %}

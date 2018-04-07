@@ -8,5 +8,6 @@ urlpatterns = [
 	path('<int:books_id>/', views.detail, name='detail'),
 	path('rent/', views.rent, name='rent'),
 	path('rent/confirm/', views.rent_confirm, name='confirm'),
+	path('history/', views.history, name='history')
 	# path('rent/', views.rent(), name='rent')
 ]

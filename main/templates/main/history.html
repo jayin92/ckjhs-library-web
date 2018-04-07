@@ -1,0 +1,39 @@
+{% extends 'main/base.html'%}
+{% block content %}
+
+{% if borrow_list %}
+<table class="table" style="width:100%">
+	<tr>
+		<th>書名</th>
+		<th>作者</th>
+		<th>出版日期</th>
+		<th>ISBN</th>
+		<th>借閱日期</th>
+		<th>歸還日期</th>
+	</tr>
+	{% for history in borrow_list %}
+		{% if history.return_time == None %}
+		<tr>
+			<td><font color="green">{{history.title}}</td>
+			<td><font color="green">{{history.author}}</td>
+			<td><font color="green">{{history.pubtime}}</td>
+			<td><font color="green">{{history.isbn}}</td>
+			<td><font color="green">{{history.rent_time}}</td>
+		</tr>
+		{% else %}
+		<tr>
+			<td>{{history.title}}</td>
+			<td>{{history.author}}</td>
+			<td>{{history.pubtime}}</td>
+			<td>{{history.isbn}}</td>
+			<td>{{history.rent_time}}</td>
+			<td>{{history.return_time}}
+
+			</td>
+		</tr>
+		{% endif %}
+		{% endfor %}
+
+</table>
+{% endif %}
+{% endblock content %}
