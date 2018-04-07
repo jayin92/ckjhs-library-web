@@ -1,15 +1,17 @@
 from .models import Books, Borrows
 import django.utils.timezone as timezone
-def confirm_rent_database(books, username):
+def confirm_rent_database(books, user):
 	for book in books:
 		print(book.book_borrowid)
-		if book.book_borrowid == username:
+		if book.book_borrowid == user.profile.school_id:
 			book.book_borrowid = ''
-			borrow = Borrows.objects.get(borrower=username, isbn=book.book_isbn, return_time=None)
+			book.book_borrowname = ''
+			borrow = Borrows.objects.get(borrower=user.profile.real_name, isbn=book.book_isbn, return_time=None)
 			borrow.return_time = timezone.now()
 		else:
-			book.book_borrowid = username
-			borrow = Borrows(borrower = username,
+			book.book_borrowid = user.profile.school_id
+			book.book_borrowname = user.profile.real_name
+			borrow = Borrows(borrower = user.profile.real_name,
 							 title = book.book_title,
 							 isbn  = book.book_isbn,
 							 author = book.book_author,

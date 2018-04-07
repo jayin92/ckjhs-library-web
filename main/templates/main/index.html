@@ -10,15 +10,13 @@
 	</tr>
 	{% for book in all_book_list %}
 		{% if book.book_borrowid %}
-		<div id="parent">
-		<tr data-toggle="tooltip" title="借閱人：{{ book.book_borrowid }}">
+		<tr data-toggle="tooltip" title="借閱人：{{book.book_borrowid}} {{ book.book_borrowname }}">
 			<td><font color="green">{{book.book_title}}</font></td>
 			<td><font color="green">{{book.book_author}}</font></td>
 			<td><font color="green">{{book.book_pubtime}}</font></td>
 			<td><font color="green">{{book.book_isbn}}</font></td>
 		</tr>
-		<div id="popup" style="display: none">{{book.book_borrowid}}</div>
-	</div>
+
 		{% else %}
 		<tr>
 			<td>{{book.book_title}}</td>

@@ -25,7 +25,7 @@ isbn 欄位(每個人都不會亂借書)
 		<th>ISBN</th>
 	</tr>
 	{% for book in book_list %}
-		{% if book.book_borrowid == user.username %}
+		{% if book.book_borrowid == user.profile.school_id %}
 		<tr>
 			<td><font color="green">{{book.book_title}}</font></td>
 			<td><font color="green">{{book.book_author}}</font></td>
