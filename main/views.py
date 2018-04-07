@@ -24,13 +24,19 @@ def rent(request):
 	message = ''
 	error = False
 	if request.method == 'POST':
+		print(book_list)
 		form = BookForm(request.POST)
 		if form.is_valid():
 			isbn = form.cleaned_data['book_isbn']
 			form = BookForm()
 			try:
 				book = Books.objects.get(book_isbn=isbn)
-				if book.book_borrowid :
+				print(book.book_borrowid)
+				if book in book_list:
+					message = '請勿重複掃描書籍'
+					messages.warning(request, message, extra_tags='alert')
+					return render(request, 'main/rent.html', {'form':form, 'book_list':book_list})
+				if book.book_borrowid != request.user.username and not book.book_borrowid == '':
 					message = '這本書已被{}借出, 請選擇其他書籍'.format(book.book_borrowid)
 					messages.warning(request, message, extra_tags='alert')
 				else:
@@ -44,15 +50,15 @@ def rent(request):
 @login_required(login_url='/login/')
 def rent_confirm(request):
 	global book_list
-	print(len(book_list))
-	if len(book_list) <= 1:
+	if len(book_list) <= 0:
 		messages.error(request, '請先借閱書籍', extra_tags='alert')
 		return render(request, 'main/rent_confirm.html')
 	borrow_list = list(book_list)
 	book_list = []
-	confirm_rent_database(book_list, request.user.username)
+	print(request.user.username)
+	confirm_rent_database(borrow_list, request.user.username)
 	messages.success(request, '借閱成功', extra_tags='alert')
-	return render(request, 'main/rent_confirm.html', {'book_list':borrow_list})
+	return render(request, 'main/rent_confirm.html', {'borrow_list':borrow_list})
 
 def detail(request, books_id):
 	book = get_object_or_404(Books, pk=books_id) # use book_id as a url

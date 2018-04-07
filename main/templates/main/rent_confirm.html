@@ -11,7 +11,7 @@
 {% endfor %}
 {% endif %}
 
-{% if book_list %}
+{% if borrow_list|length >= 1 %}
 借閱書籍如下：
 <table class="table-hover" style="width:100%">
 	<tr>
@@ -20,7 +20,7 @@
 		<th>出版日期</th>
 		<th>ISBN</th>
 	</tr>
-	{% for book in book_list %}
+	{% for book in borrow_list %}
 		<tr>
 			<td>{{book.book_title}}</td>
 			<td>{{book.book_author}}</td>
@@ -29,5 +29,6 @@
 		</tr>
 	{% endfor %}
 </table>
+
 {% endif %}
 {% endblock content %}
