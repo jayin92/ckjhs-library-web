@@ -1,12 +1,13 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
-from django.http import HttpResponseRedirect
-from .models import Books
-from .forms import BookForm, LoginForm
-from .rent import confirm_rent_database
+from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages
+from .models import Books
+from .forms import BookForm, LoginForm
+from .rent import confirm_rent_database
 book_list = []
 # Create your views here.
 class IndexView(generic.ListView):
@@ -20,6 +21,7 @@ class IndexView(generic.ListView):
 @login_required(login_url='/login/')
 def rent(request):
 	global book_list
+	message = ''
 	error = False
 	if request.method == 'POST':
 		form = BookForm(request.POST)
@@ -27,23 +29,25 @@ def rent(request):
 			isbn = form.cleaned_data['book_isbn']
 			try:
 				book = Books.objects.get(book_isbn=isbn)
-				if book.borrowid:
-					message = '這本書已被{}借出, 請選擇其他書籍'.format(book.borrowid)
+				if book.book_borrowid :
+					message = '這本書已被{}借出, 請選擇其他書籍'.format(book.book_borrowid)
+					messages.warning(request, message, extra_tags='alert')
 				else:
 					book_list.append(book)
-					message = '請輸入有效的ISBN'
 			except:
-				message = ''
-			form = BookForm()
+				message = '請輸入有效的ISBN'
+				messages.warning(request, message, extra_tags='alert')
 	else:
 		form = BookForm()
-	return render(request, 'main/rent.html', {'form':form, 'book_list':book_list, 'message':message})
+	return render(request, 'main/rent.html', {'form':form, 'book_list':book_list})
 
-def confirm_rent(request):
+def rent_confirm(request):
 	global book_list
 	if request.method == 'POST':
 		confirm_rent_database(book_list, request.user.username)
-
+		messages.success(request, '借閱成功', extra_tags='alert')
+		book_list = []
+		return render(request, 'main/rent_confirm.html',{'book_list':book_list})
 	return render(request, 'main/rent_confirm.html', {'book_list':book_list})
 
 def detail(request, books_id):

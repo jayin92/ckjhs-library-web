@@ -1,12 +1,5 @@
-{% extends 'main/base.html'%}
+{% extends 'main/base.html' %}
 {% block content %}
-<!-- 目前構想
-isbn 欄位(每個人都不會亂借書)
-登錄後自動填入班級座號姓名
-設計可借閱多本書的類似表格的系統
-自動判斷借閱或歸還
-	 	-->
-<!-- 刷入書籍 書籍isbn 出版日期 作者  -->
 {% if messages %}
 {% for message in messages %}
   <div class="alert {{ message.tags }} alert-dismissible" role="alert">
@@ -17,6 +10,8 @@ isbn 欄位(每個人都不會亂借書)
   </div>
 {% endfor %}
 {% endif %}
+
+{% if book_list %}
 <table class="table-hover" style="width:100%">
 	<tr>
 		<th>書名</th>
@@ -32,13 +27,10 @@ isbn 欄位(每個人都不會亂借書)
 			<td>{{book.book_isbn}}</td>
 		</tr>
 	{% endfor %}
-
 </table>
-<br>
-<form method="post">
-    {% csrf_token %}
-    {{ form }}
-    <input type="submit" class="btn btn-primary" value="送出" />
-</form>
-<input type="button" value='確認借閱' onclick="location.href='/book/rent/confirm'" class="btn btn-primary"></button>
+	<form method="post">
+	    {% csrf_token %}
+			<input type="submit" class="btn btn-primary" value="確認借閱" />
+	</form>
+{% endif %}
 {% endblock content %}
