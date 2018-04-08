@@ -79,6 +79,10 @@ def loginview(request):
 		if user is not None:
 			login(request, user)
 			return HttpResponseRedirect('/book/')
+		else:
+			form = LoginForm()
+			message = '找不到帳號或帳號密碼錯誤'
+			messages.error(request, message, extra_tags='alert')
 	else:
 		form = LoginForm()
 	return render(request, 'main/login.html', {'form':form})
