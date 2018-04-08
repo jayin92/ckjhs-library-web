@@ -24,7 +24,7 @@
 					<a class="navbar-text"><font color="green">歡迎 {{user.profile.real_name}} 同學</font></a>
 		{% else %}
 					<!-- <a class="navbar-text"><font color="red">登入後才能使用其他功能</font></a> -->
-					<a class="nav-link" href="/login/">登入</a>
+					<a class="nav-link {% if request.path == '/login/' %}active{% endif %}" href="/login/">登入</a>
 					<a class="nav-link {% if request.path == '/register/' %}active{% endif %}" href='/register/'>註冊</a>
 		{% endif %}
 			</li>
