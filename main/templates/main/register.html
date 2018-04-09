@@ -3,6 +3,11 @@
 {% block content %}
   <h2>註冊</h2>
   <form method="post">
+  		{% for field in form %}
+  		{% for error in field.errors %}
+          <p style="color: red">{{ error }}</p>
+        {% endfor %}
+        {% endfor %}
 		{% csrf_token %}
 		<p>
 			<label for="id_username">使用者名稱：</label><br>
