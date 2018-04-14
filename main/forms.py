@@ -16,3 +16,10 @@ class RegisterForm(UserCreationForm):
 	class Meta:
 		model = User
 		fields = ('username', 'real_name', 'school_id', 'password1', 'password2')
+
+class AddBookForm(forms.Form):
+	isbn = forms.CharField(label='書籍ISBN', max_length=100)
+	barcode = forms.CharField(label='書籍條碼', max_length=5)
+	title = forms.CharField(label='標題')
+	author = forms.CharField(label='作者')
+	pubtime = forms.CharField(label='出版日期')

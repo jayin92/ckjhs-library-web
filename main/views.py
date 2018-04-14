@@ -2,11 +2,11 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from .models import Books, Borrows
-from .forms import BookForm, LoginForm, RegisterForm
+from .forms import BookForm, LoginForm, RegisterForm, AddBookForm
 from .rent import confirm_rent_database
 book_list = []
 # Create your views here.
@@ -17,6 +17,9 @@ class IndexView(generic.ListView):
 	def get_queryset(self):
 		"""Return all books in datebase"""
 		return Books.objects.all()
+
+# def check_admin:
+#    return user.is_superuser
 
 @login_required(login_url='/login/')
 def rent(request):
@@ -51,14 +54,14 @@ def rent(request):
 @login_required(login_url='/login/')
 def rent_confirm(request):
 	global book_list
-	if len(book_list) <= 0:
+	if len(book_list) == 0:
 		messages.error(request, '請先借閱書籍', extra_tags='alert')
 		return render(request, 'main/rent_confirm.html')
 	borrow_list = list(book_list)
 	book_list = []
 	print(request.user.username)
 	confirm_rent_database(borrow_list, request.user)
-	messages.success(request, '借閱成功', extra_tags='alert')
+	messages.success(request, '借閱&歸還成功', extra_tags='alert')
 	return render(request, 'main/rent_confirm.html', {'borrow_list':borrow_list})
 
 @login_required(login_url='/login/')
@@ -108,3 +111,42 @@ def registerview(request):
 	else:
 		form = RegisterForm()
 	return render(request, 'main/register.html', {'form':form})
+
+# addBookList = []
+# @user_passes_test(check_admin)
+def addBookView(request):
+	# global addBookList
+	book_need_confirm = {}
+	print('test')
+	if request.method == 'POST':
+		form = AddBookForm(request.POST)
+		isbn = request.POST['isbn']
+		barcode = request.POST['barcode']
+		title = request.POST['title']
+		author = request.POST['author']
+		pubtime = request.POST['pubtime']
+		print(request.POST)
+		if 'search' in request.POST:
+			try:
+				book_need_confirm = Books.objects.get(book_isbn=isbn)
+			except:
+				message = '資料庫中無此書籍'
+				messages.warning(request, message, extra_tags='alert')
+		elif form.is_valid() and 'save' in request.POST:
+			try:
+				book = Books.objects.get(book_isbn=isbn)
+				book.book_title = title
+				book.book_author = author
+				book.book_pubtime = pubtime
+				book.book_isbn = isbn
+				book.book_barcode = barcode
+				book.save()
+				message = '已儲存'
+				messages.warning(request, message, extra_tags='success')
+			except:
+				book = Books.objects.create()
+			form = AddBookForm()
+	else:
+		form = AddBookForm()
+
+	return render(request, 'main/addbook.html', {'form':form, 'book_need_confirm':book_need_confirm})
