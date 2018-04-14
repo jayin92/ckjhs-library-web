@@ -142,7 +142,7 @@ def addBookView(request):
 				book.book_barcode = barcode
 				book.save()
 				message = '已儲存'
-				messages.warning(request, message, extra_tags='success')
+				messages.success(request, message, extra_tags='alert')
 			except:
 				book = Books.objects.create()
 			form = AddBookForm()
