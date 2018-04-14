@@ -1,0 +1,42 @@
+{% extends 'main/base.html'%}
+{% block content %}
+
+{% if messages %}
+{% for message in messages %}
+  <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    {{ message }}
+	</div>
+{% endfor %}
+{% endif %}
+
+<form method="post">
+	{% csrf_token %}
+	<p>
+		<label for="book_username">ISBN：</label><br>
+			<input type="text" name="isbn" value="{{ book_need_confirm.book_isbn}}" maxlength="150" />
+	</p>
+	<p>
+		<label for="book_barcode">條碼：</label><br>
+			<input type="text" name="barcode" required maxlength="150" />
+	</p>
+	<p>
+		<label for="book_title">標題：</label><br>
+		<input type="text" name="title" value="{{ book_need_confirm.book_title}}" maxlength="150" />
+	</p>
+	<p>
+		<label for="book_author">作者：</label><br>
+			<input type="text" name="author" value="{{ book_need_confirm.book_author}}" maxlength="150" />
+	</p>
+	<p>
+		<label for="book_pubtime">出版日期(例:2003-8)：</label><br>
+			<input type="text" name="pubtime" value="{{ book_need_confirm.book_pubtime}}" maxlength="150" />
+	</p>
+
+	<input type="submit" value='查詢' name="search" class="btn btn-primary" />
+	<input type="submit" value='儲存' name="save" class="btn btn-primary" />
+</form>
+
+{% endblock content %}
