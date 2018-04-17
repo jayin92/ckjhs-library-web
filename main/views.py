@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
 from django.http import HttpResponseRedirect, HttpResponse
@@ -117,7 +119,7 @@ def registerview(request):
 def addBookView(request):
 	# global addBookList
 	book_need_confirm = {}
-	print('test')
+	barcode = ''
 	if request.method == 'POST':
 		form = AddBookForm(request.POST)
 		isbn = request.POST['isbn']
@@ -128,7 +130,7 @@ def addBookView(request):
 		print(request.POST)
 		if 'search' in request.POST:
 			try:
-				book_need_confirm = Books.objects.get(book_isbn=isbn)
+				book_need_confirm = Books.objects.get(book_isbn=isbn)				
 			except:
 				message = '資料庫中無此書籍'
 				messages.warning(request, message, extra_tags='alert')
@@ -141,6 +143,7 @@ def addBookView(request):
 				book.book_isbn = isbn
 				book.book_barcode = barcode
 				book.save()
+				barcode = ''
 				message = '已儲存'
 				messages.success(request, message, extra_tags='alert')
 			except:
@@ -149,4 +152,4 @@ def addBookView(request):
 	else:
 		form = AddBookForm()
 
-	return render(request, 'main/addbook.html', {'form':form, 'book_need_confirm':book_need_confirm})
+	return render(request, 'main/addbook.html', {'form':form, 'book_need_confirm':book_need_confirm, 'barcode':barcode})
