@@ -120,6 +120,7 @@ def addBookView(request):
 	# global addBookList
 	book_need_confirm = {}
 	barcode = ''
+	isbn = ''
 	if request.method == 'POST':
 		form = AddBookForm(request.POST)
 		isbn = request.POST['isbn']
@@ -133,6 +134,7 @@ def addBookView(request):
 				book_need_confirm = Books.objects.get(book_isbn=isbn)				
 			except:
 				message = '資料庫中無此書籍'
+
 				messages.warning(request, message, extra_tags='alert')
 		elif form.is_valid() and 'save' in request.POST:
 			try:
@@ -144,12 +146,24 @@ def addBookView(request):
 				book.book_barcode = barcode
 				book.save()
 				barcode = ''
+				isbn = ''				
 				message = '已儲存'
 				messages.success(request, message, extra_tags='alert')
 			except:
 				book = Books.objects.create()
+				book.book_title = title
+				book.book_author = author
+				book.book_pubtime = pubtime
+				book.book_isbn = isbn
+				book.book_barcode = barcode
+				book.save()
+				barcode = ''
+				isbn = ''
+				message = '已儲存'
+				messages.success(request, message, extra_tags='alert')
+
 			form = AddBookForm()
 	else:
 		form = AddBookForm()
 
-	return render(request, 'main/addbook.html', {'form':form, 'book_need_confirm':book_need_confirm, 'barcode':barcode})
+	return render(request, 'main/addbook.html', {'form':form, 'book_need_confirm':book_need_confirm, 'barcode':barcode, 'isbn':isbn})

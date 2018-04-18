@@ -16,7 +16,7 @@
 	{% csrf_token %}
 	<p>
 		<label for="book_username">ISBN：</label><br>
-			<input type="text" name="isbn" value="{{ book_need_confirm.book_isbn}}" maxlength="150" />
+			<input type="text" id="isbn" name="isbn" value="{{ isbn}}" maxlength="150" />
 	</p>
 	<p>
 		<label for="book_barcode">條碼：</label><br>
@@ -38,5 +38,8 @@
 	<input type="submit" value='查詢' name="search" class="btn btn-primary" />
 	<input type="submit" value='儲存' name="save" class="btn btn-primary" />
 </form>
-
+<script>
+	var input = document.getElementById("isbn");
+	input.focus();
+</script>
 {% endblock content %}
