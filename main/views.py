@@ -7,7 +7,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
-from .models import Books, Borrows
+from .models import Books, NewBooks, Borrows
 from .forms import BookForm, LoginForm, RegisterForm, AddBookForm
 from .rent import confirm_rent_database
 book_list = []
@@ -20,7 +20,7 @@ class IndexView(generic.ListView):
 
     def get_queryset(self):
         """Return all books in datebase"""
-        return Books.objects.all()
+        return NewBooks.objects.all()
 
 # def check_admin:
 #    return user.is_superuser
@@ -32,7 +32,6 @@ def rent(request):
     message = ''
     error = False
     if request.method == 'POST':
-        print(book_list)
         form = BookForm(request.POST)
         if form.is_valid():
             barcode = form.cleaned_data['book_barcode']
@@ -79,7 +78,7 @@ def history(request):
 
 
 def detail(request, books_id):
-    book = get_object_or_404(Books, pk=books_id)  # use book_id as a url
+    book = get_object_or_404(NewBooks, pk=books_id)  # use book_id as a url
     return render(request, 'main/detail.html', {'book': book})  # return a dict contain book's date
 
 
@@ -144,11 +143,10 @@ def addBookView(request):
                     book_need_confirm = Books.objects.get(book_isbn=isbn)
                 except:
                     message = '資料庫中無此書籍'
-
                     messages.warning(request, message, extra_tags='alert')
             elif form.is_valid() and 'save' in request.POST:
                 try:
-                    book = Books.objects.get(book_isbn=isbn)
+                    book = NewBooks.objects.get(book_barcode=barcode)
                     book.book_title = title
                     book.book_author = author
                     book.book_pubtime = pubtime
@@ -160,7 +158,7 @@ def addBookView(request):
                     message = '已儲存'
                     messages.success(request, message, extra_tags='alert')
                 except:
-                    book = Books.objects.create()
+                    book = NewBooks.objects.create()
                     book.book_title = title
                     book.book_author = author
                     book.book_pubtime = pubtime

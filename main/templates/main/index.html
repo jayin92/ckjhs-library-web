@@ -1,7 +1,7 @@
 {% extends 'main/base.html'%}
 {% block content %}
 {% if all_book_list %}
-<table class="table" style="width:100%">
+<table class="table" style="width:100%;text-align:center">
 	<tr>
 		<th>書名</th>
 		<th>作者</th>
@@ -14,7 +14,11 @@
 			<td><font color="green">{{book.book_title}}</font></td>
 			<td><font color="green">{{book.book_author}}</font></td>
 			<td><font color="green">{{book.book_pubtime}}</font></td>
-			<td><font color="green">{{book.book_isbn}}</font></td>
+			{% if book.book_isbn == '1' %}
+				<td><font color="green">無</font></td>
+			{% else %}
+				<td><font color="green">{{book.book_isbn}}</font></td>
+			{% endif %}
 		</tr>
 
 		{% else %}
@@ -22,7 +26,11 @@
 			<td>{{book.book_title}}</td>
 			<td>{{book.book_author}}</td>
 			<td>{{book.book_pubtime}}</td>
-			<td>{{book.book_isbn}}</td>
+			{% if book.book_isbn == '1' %}
+				<td>無</td>
+			{% else %}
+				<td>{{book.book_isbn}}</td>
+			{% endif %}
 		</tr>
 		{% endif %}
 		{% endfor %}
