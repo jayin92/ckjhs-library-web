@@ -37,7 +37,7 @@ def rent(request):
             barcode = form.cleaned_data['book_barcode']
             form = BookForm()
             try:
-                book = Books.objects.get(book_barcode=barcode)
+                book = NewBooks.objects.get(book_barcode=barcode)
                 print(book.book_borrowid)
                 if book in book_list:
                     message = '請勿重複掃描書籍'
