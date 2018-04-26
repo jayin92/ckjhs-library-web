@@ -53,7 +53,7 @@ isbn 欄位(每個人都不會亂借書)
 <input type="button" value='確認借閱&amp歸還' onclick="location.href='/book/rent/confirm'" class="btn btn-primary">
 {% endif %}
 <script>
-	var input = document.getElementById("id_book_isbn");
+	var input = document.getElementById("id_book_barcode");
 	input.focus();
 </script>
 {% endblock content %}
