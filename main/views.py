@@ -25,6 +25,9 @@ class IndexView(generic.ListView):
 # def check_admin:
 #    return user.is_superuser
 
+def rootRedirect(request):
+    return HttpResponseRedirect('/book/')
+
 
 @login_required(login_url='/login/')
 def rent(request):

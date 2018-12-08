@@ -19,6 +19,7 @@ from django.contrib.auth.views import login, logout
   # 利用內建的view funciton
 from main import views
 urlpatterns = [
+    path('', views.rootRedirect, name="rootRedirect"),
 	path('book/', include('main.urls')),
     path('admin/', admin.site.urls),
 	path('login/', views.loginview, name='loginview'),
